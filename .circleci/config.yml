@@ -10,4 +10,5 @@ jobs:
           name: Run Bash Script
           command: |
             echo "Hello, World!"
-            # Add your bash commands here
+            bash -version
+            uname -a
