@@ -13,7 +13,7 @@ jobs:
       - run:
           name: Hello World
           command: |
-          echo "hello World"
+            echo "hello World"
       - run:
           name: List /usr directory
           command: |
