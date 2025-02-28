@@ -27,12 +27,13 @@ jobs:
           paths:
             - usr_contents.txt
             - usr_lib_contents.txt
-      - approval:
-          type: approval
-          name: Approve to Finish
+     # - approval:
+     #     type: approval
+     #     name: Approve to Finish
 
 workflows:
   version: 2
   check_directories_and_approval:
     jobs:
       - check-directories
+      - hold
