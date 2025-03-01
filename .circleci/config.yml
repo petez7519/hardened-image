@@ -34,6 +34,14 @@ jobs:
       - store_artifacts:
           path: combined_directory_contents.txt
           destination: directory_snapshots
+      - run:
+          name: Install Trivy
+          command: |
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+      - run:
+          name: Run Security Scan
+          command: |
+            ./trivy image --severity CRITICAL,HIGH $IMAGE_NAME
 
 workflows:
   version: 2
