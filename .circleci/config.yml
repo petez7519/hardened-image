@@ -8,6 +8,8 @@ executors:
 jobs:
   snapshot-directory:
     executor: docker-executor
+    environment:
+      IMAGE_NAME: petesimage 
     steps:
       - run:
           name: Say Hello
