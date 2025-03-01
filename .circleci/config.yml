@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Run Security Scan
           command: |
-            ./trivy image --severity CRITICAL,HIGH $IMAGE_NAME
+            ./bin/trivy image --severity CRITICAL,HIGH $IMAGE_NAME
 
 workflows:
   version: 2
