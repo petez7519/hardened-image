@@ -6,10 +6,8 @@ executors:
       - image: cimg/base:stable
 
 jobs:
-  snapshot-and-scan:
+  snapshot-directory:
     executor: docker-executor
-    environment:
-      IMAGE_NAME: <your_image_name>  # Replace with your Docker image name
     steps:
       - run:
           name: Say Hello
@@ -17,36 +15,26 @@ jobs:
       - checkout
       - run:
           name: List /usr directory
-          command: ls -l /usr > usr_contents.txt
+          command: |
+            ls -l /usr > usr_contents.txt
       - run:
           name: List /usr/lib directory
-          command: ls -l /usr/lib > usr_lib_contents.txt
+          command: |
+            ls -l /usr/lib > usr_lib_contents.txt
       - run:
           name: Combine Directory Listings
-          command: cat usr_contents.txt usr_lib_contents.txt > combined_directory_contents.txt
+          command: |
+            cat usr_contents.txt usr_lib_contents.txt > combined_directory_contents.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - combined_directory_contents.txt
       - store_artifacts:
           path: combined_directory_contents.txt
           destination: directory_snapshots
-      - run:
-          name: Install Trivy
-          command: |
-            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-      - run:
-          name: Run Security Scan
-          command: ./trivy image --severity CRITICAL,HIGH $IMAGE_NAME
-      - store_artifacts:
-          path: trivy_sbom.json
-          destination: security_reports
-
-jobs:
-  approval_step:
-    type: approval
 
 workflows:
   version: 2
-  snapshot_scan_and_approval:
+  snapshot_and_view:
     jobs:
-      - snapshot-and-scan
-      - approval_step:
-          requires:
-            - snapshot-and-scan
+      - snapshot-directory
