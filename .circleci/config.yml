@@ -6,8 +6,10 @@ executors:
       - image: cimg/base:stable
 
 jobs:
-  snapshot-directory:
+  snapshot-and-scan:
     executor: docker-executor
+    environment:
+      IMAGE_NAME: hardened_scan  # Replace with your Docker image name
     steps:
       - run:
           name: Say Hello
@@ -34,9 +36,24 @@ jobs:
       - store_artifacts:
           path: combined_directory_contents.txt
           destination: directory_snapshots
+      - run:
+          name: Install Trivy
+          command: |
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+      - run:
+          name: Run Security Scan
+          command: |
+            ./trivy image --severity CRITICAL,HIGH $IMAGE_NAME
+      - store_artifacts:
+          path: trivy_report.json
+          destination: security_reports
+      - run:
+          name: Approval Step
+          type: approval
+          message: "Please review the security scan report before proceeding."
 
 workflows:
   version: 2
-  snapshot_and_view:
+  snapshot_scan_and_approval:
     jobs:
-      - snapshot-directory
+      - snapshot-and-scan
