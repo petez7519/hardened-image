@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cgr.dev/chainguard/bash:latest
+      - image: cimg/base:stable
     resource_class: petez7519/aws_runner
     steps:
       - run: echo "Hi I'm on a Container Runner!"
