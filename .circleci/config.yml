@@ -6,15 +6,6 @@ jobs:
     resource_class: petez7519/undistro
     steps:
       - run: echo "Hi I'm a CVE 0 Container Runner!"
-        name: List /usr directory
-        command: |
-          ls -l /usr > usr_contents.txt
-        name: List /usr/lib directory
-        command: |
-          ls -l /usr/lib > usr_lib_contents.txt
-        name: Combine Directory Listings
-        command: |
-          cat usr_contents.txt usr_lib_contents.txt > combined_directory_contents.txt
 workflows:
   build-workflow:
     jobs:
