@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/postgres:17.3.0
+     # - image: cimg/postgres:17.3.0
     resource_class: petez7519/aws_runner
     steps:
      - run:
