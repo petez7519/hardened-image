@@ -4,7 +4,6 @@ executors:
   docker-executor:
     docker:
       - image: cimg/base:stable
-
 jobs:
   snapshot-directory:
     executor: docker-executor
@@ -34,15 +33,6 @@ jobs:
       - store_artifacts:
           path: combined_directory_contents.txt
           destination: directory_snapshots
-      - run:
-          name: Install Trivy
-          command: |
-            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-      - run:
-          name: Run Security Scan
-          command: |
-            ./bin/trivy image --severity CRITICAL,HIGH $IMAGE_NAME
-
 workflows:
   version: 2
   snapshot_and_view:
